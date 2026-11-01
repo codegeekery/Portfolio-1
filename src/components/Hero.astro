@@ -1,0 +1,29 @@
+---
+import OrgChart from './OrgChart.astro';
+import { hero } from '../data/content';
+---
+
+<section id="inicio" class="pt-10 pb-20 sm:pt-16 lg:pt-20 lg:pb-28">
+  <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1fr_1.25fr] lg:gap-16 lg:px-8">
+    <div>
+      <h1 class="type-display max-w-[13ch] text-hero text-balance">{hero.title}</h1>
+      <p class="mt-7 max-w-[34rem] text-lg leading-relaxed text-gris">{hero.subtitle}</p>
+      <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+        <a
+          href={hero.primaryCta.href}
+          class="rounded-xl bg-ultramar px-6 py-4 text-lg font-semibold text-white transition-colors hover:bg-ultramar-deep"
+        >
+          {hero.primaryCta.label}
+        </a>
+        <a
+          href={hero.secondaryCta.href}
+          class="font-semibold underline decoration-violeta decoration-2 underline-offset-[6px] transition-colors hover:text-violeta"
+        >
+          {hero.secondaryCta.label}
+        </a>
+      </div>
+    </div>
+
+    <OrgChart />
+  </div>
+</section>

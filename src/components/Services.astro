@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import SectionHeader from './SectionHeader.astro';
+import { services } from '../data/content';
+---
+
+<section id="servicios" class="border-t border-linea py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <SectionHeader title={services.title} subtitle={services.subtitle} />
+
+    <ul class="mt-14 border-t-2 border-tinta">
+      {
+        services.items.map((item) => (
+          <li class="grid gap-4 border-b border-linea py-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,1fr)] md:gap-10">
+            <h3 class="type-display text-h3">{item.title}</h3>
+            <p class="max-w-[46ch] text-gris">{item.description}</p>
+            <ul class="space-y-1.5 text-[0.95rem]">
+              {item.includes.map((inc) => (
+                <li class="flex gap-2.5">
+                  <Icon name="check" class="mt-1 size-4 shrink-0 text-violeta" />
+                  {inc}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Figtree", ui-sans-serif, sans-serif;
+
+  /* Paleta */
+  --color-ultramar: #2f3cf5;
+  --color-ultramar-deep: #2129c4;
+  --color-violeta: #8a3ffc;
+  --color-lila: #ece7ff;
+  --color-tinta: #1a1748;
+  --color-papel: #fbfaff;
+  --color-gris: #5b587c;
+  --color-linea: #d9d3f5;
+
+  /* Escala tipográfica (aprox. 1.333) */
+  --text-hero: clamp(2.6rem, 1.5rem + 4.4vw, 4.9rem);
+  --text-hero--line-height: 0.98;
+  --text-h2: clamp(2rem, 1.35rem + 2.4vw, 3.3rem);
+  --text-h2--line-height: 1.02;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.15;
+}
+
+@utility type-display {
+  font-family: var(--font-display);
+  font-stretch: 82%;
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  font-optical-sizing: auto;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-papel font-sans text-[1.0625rem] leading-relaxed text-tinta antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-violeta);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: var(--color-lila);
+  }
+}
+
+/* ---------- Organigrama del hero ---------- */
+
+.slot {
+  display: grid;
+}
+
+.slot > * {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.3s ease,
+    transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.25);
+}
+
+/* Sin JS o con movimiento reducido: el equipo se ve completo */
+.slot-vacant {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .slot:not(.is-filled) .slot-vacant {
+    opacity: 1;
+  }
+
+  .js .slot:not(.is-filled) .slot-filled {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  .js .slot.is-filled .slot-vacant {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+
+  .js .slot.is-filled .slot-filled {
+    animation: slot-ping 0.9s ease-out 0.15s;
+  }
+}
+
+@keyframes slot-ping {
+  from { box-shadow: 0 0 0 0 rgb(138 63 252 / 0.55); }
+  to { box-shadow: 0 0 0 12px rgb(138 63 252 / 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

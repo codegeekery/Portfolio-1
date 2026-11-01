@@ -1,0 +1,105 @@
+---
+import Icon from './Icon.astro';
+import { contact } from '../data/content';
+
+const inputClass =
+  'w-full rounded-lg border border-linea bg-white px-4 py-3 text-tinta placeholder:text-gris/70 transition-colors focus:border-violeta focus:outline-none focus-visible:outline-none focus:ring-3 focus:ring-violeta/20 aria-[invalid=true]:border-red-600';
+const labelClass = 'mb-1.5 block text-[0.95rem] font-semibold';
+---
+
+<section id="contacto" class="py-20 sm:py-28">
+  <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.15fr] lg:gap-20 lg:px-8">
+    <div>
+      <h2 class="type-display text-h2">{contact.title}</h2>
+      <p class="mt-5 max-w-[40ch] text-lg text-gris">{contact.subtitle}</p>
+      <p class="mt-6 flex items-center gap-2.5 font-medium">
+        <Icon name="check" class="size-5 text-violeta" />
+        {contact.note}
+      </p>
+    </div>
+
+    <div class="rounded-[1.75rem] border border-linea bg-white p-6 sm:p-9">
+      <form id="contact-form" class="grid gap-5 sm:grid-cols-2" novalidate>
+        <div>
+          <label for="f-name" class={labelClass}>Nombre</label>
+          <input id="f-name" name="name" type="text" required autocomplete="name" class={inputClass} data-label="Nombre" />
+        </div>
+        <div>
+          <label for="f-company" class={labelClass}>Empresa</label>
+          <input id="f-company" name="company" type="text" required autocomplete="organization" class={inputClass} data-label="Empresa" />
+        </div>
+        <div>
+          <label for="f-email" class={labelClass}>Correo de trabajo</label>
+          <input id="f-email" name="email" type="email" required autocomplete="email" placeholder="nombre@empresa.com" class={inputClass} data-label="Correo de trabajo" />
+        </div>
+        <div>
+          <label for="f-size" class={labelClass}>Tamaño del equipo</label>
+          <select id="f-size" name="size" required class={inputClass} data-label="Tamaño del equipo">
+            <option value="" selected>Elige una opción</option>
+            {contact.form.sizes.map((s) => <option>{s}</option>)}
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="f-message" class={labelClass}>
+            ¿Qué te gustaría resolver? <span class="font-normal text-gris">(opcional)</span>
+          </label>
+          <textarea id="f-message" name="message" rows="3" placeholder="Por ejemplo: necesitamos contratar 5 vendedores este trimestre" class={inputClass}></textarea>
+        </div>
+
+        <p id="form-error" class="hidden text-[0.95rem] font-medium text-red-700 sm:col-span-2" role="alert"></p>
+
+        <button
+          type="submit"
+          class="rounded-xl bg-ultramar px-6 py-4 text-lg font-semibold text-white transition-colors hover:bg-ultramar-deep sm:col-span-2 sm:justify-self-start"
+        >
+          {contact.form.submit}
+        </button>
+      </form>
+
+      <div id="form-success" class="hidden py-8" role="status" tabindex="-1">
+        <span class="grid size-14 place-items-center rounded-full bg-violeta text-white">
+          <Icon name="check" class="size-7" />
+        </span>
+        <p class="type-display mt-5 text-h3">{contact.form.successTitle}</p>
+        <p class="mt-2 text-gris" data-success-text>{contact.form.success}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Formulario de demostración: valida y confirma, pero no envía datos a ningún servidor.
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const error = document.getElementById('form-error')!;
+  const success = document.getElementById('form-success')!;
+  const successText = success.querySelector('[data-success-text]')!;
+  const fields = [...form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[required]')];
+
+  fields.forEach((f) =>
+    f.addEventListener('input', () => {
+      if (f.checkValidity()) f.removeAttribute('aria-invalid');
+    }),
+  );
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const invalid = fields.filter((f) => !f.checkValidity());
+    fields.forEach((f) =>
+      invalid.includes(f) ? f.setAttribute('aria-invalid', 'true') : f.removeAttribute('aria-invalid'),
+    );
+
+    if (invalid.length) {
+      const names = invalid.map((f) => f.dataset.label).join(', ');
+      error.textContent = `Revisa estos campos: ${names}.`;
+      error.classList.remove('hidden');
+      invalid[0].focus();
+      return;
+    }
+
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    successText.textContent = successText.textContent!.replace('{email}', email);
+    form.classList.add('hidden');
+    success.classList.remove('hidden');
+    success.focus();
+  });
+</script>

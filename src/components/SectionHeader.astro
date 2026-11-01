@@ -1,0 +1,14 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  light?: boolean;
+}
+
+const { title, subtitle, light = false } = Astro.props;
+---
+
+<div class="max-w-2xl">
+  <h2 class="type-display text-h2 text-balance">{title}</h2>
+  {subtitle && <p class:list={['mt-4 text-lg', light ? 'text-white/80' : 'text-gris']}>{subtitle}</p>}
+</div>

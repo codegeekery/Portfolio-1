@@ -1,0 +1,43 @@
+---
+import Logo from './Logo.astro';
+import { footer, nav, site } from '../data/content';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-tinta text-white/75">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8">
+    <div>
+      <Logo light />
+      <p class="mt-4 max-w-[28ch]">{footer.tagline}</p>
+    </div>
+
+    <nav aria-label="Secciones">
+      <h2 class="font-semibold text-white">Secciones</h2>
+      <ul class="mt-4 space-y-2.5">
+        {nav.links.map((l) => <li><a href={l.href} class="hover:text-white">{l.label}</a></li>)}
+        <li><a href={nav.cta.href} class="hover:text-white">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="font-semibold text-white">Contacto</h2>
+      <ul class="mt-4 space-y-2.5">
+        <li><a href={`mailto:${footer.email}`} class="hover:text-white">{footer.email}</a></li>
+        <li><a href={`tel:${footer.phone.replace(/\s/g, '')}`} class="hover:text-white">{footer.phone}</a></li>
+        <li>{footer.address}</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-semibold text-white">Redes</h2>
+      <ul class="mt-4 space-y-2.5">
+        {footer.socials.map((s) => <li><a href={s.href} class="hover:text-white">{s.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <p class="mx-auto max-w-7xl px-4 py-6 text-sm sm:px-6 lg:px-8">© {year} {site.fullName}</p>
+  </div>
+</footer>

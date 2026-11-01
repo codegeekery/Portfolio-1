@@ -1,0 +1,28 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import { results } from '../data/content';
+---
+
+<section id="resultados" class="bg-ultramar py-20 text-white sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <SectionHeader title={results.title} subtitle={results.subtitle} light />
+
+    <div class="mt-14 grid gap-12 md:grid-cols-3 md:gap-0 md:divide-x md:divide-white/20">
+      {
+        results.items.map((r, i) => (
+          <figure class:list={['flex flex-col', i > 0 && 'md:pl-10', i < results.items.length - 1 && 'md:pr-10']}>
+            <p class="type-display text-[clamp(2.75rem,2rem+2.5vw,4rem)] leading-none">{r.metric}</p>
+            <p class="mt-3 font-medium text-white/85">{r.metricLabel}</p>
+            <blockquote class="mt-8 flex-1 border-t border-white/20 pt-6 text-lg leading-relaxed">
+              «{r.quote}»
+            </blockquote>
+            <figcaption class="mt-6">
+              <p class="font-semibold">{r.name}</p>
+              <p class="text-sm text-white/75">{r.role}</p>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

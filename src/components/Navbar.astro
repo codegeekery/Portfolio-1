@@ -1,0 +1,88 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { nav } from '../data/content';
+---
+
+<header
+  id="navbar"
+  class="sticky top-0 z-50 border-b border-transparent bg-papel/95 transition-colors duration-300 data-[scrolled=true]:border-linea"
+>
+  <nav class="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Principal">
+    <a href="#inicio" aria-label="Talentia, ir al inicio">
+      <Logo />
+    </a>
+
+    <div class="hidden items-center gap-9 md:flex">
+      <ul class="flex items-center gap-8">
+        {
+          nav.links.map((link) => (
+            <li>
+              <a href={link.href} class="font-medium text-gris transition-colors hover:text-tinta">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href={nav.cta.href}
+        class="rounded-xl bg-ultramar px-5 py-2.5 font-semibold text-white transition-colors hover:bg-ultramar-deep"
+      >
+        {nav.cta.label}
+      </a>
+    </div>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      class="-mr-2 rounded-lg p-2 md:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="menu-open"><Icon name="menu" /></span>
+      <span class="menu-close hidden"><Icon name="close" /></span>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="hidden border-t border-linea bg-papel px-4 pt-2 pb-6 md:hidden">
+    <ul>
+      {
+        nav.links.map((link) => (
+          <li>
+            <a href={link.href} class="block border-b border-linea py-3.5 text-lg font-medium">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a href={nav.cta.href} class="mt-5 block rounded-xl bg-ultramar py-3.5 text-center font-semibold text-white">
+      {nav.cta.label}
+    </a>
+  </div>
+</header>
+
+<script>
+  const navbar = document.getElementById('navbar')!;
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  const onScroll = () => {
+    navbar.dataset.scrolled = String(window.scrollY > 8);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const setOpen = (open: boolean) => {
+    menu.classList.toggle('hidden', !open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    toggle.querySelector('.menu-open')!.classList.toggle('hidden', open);
+    toggle.querySelector('.menu-close')!.classList.toggle('hidden', !open);
+  };
+
+  toggle.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+</script>
